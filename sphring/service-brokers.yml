@@ -1,0 +1,14 @@
+service.broker.list:
+  class: \ArrayObject
+  constructor:
+      1:
+        ref:
+          default: service.broker.default
+service.broker.abstract:
+  type: abstract
+  properties:
+    doctrineBoot:
+      ref: microwebframe.doctrine
+service.broker.default:
+  class: Sphring\MicroWebFramework\ServiceBroker\DefaultServiceBroker
+  extend: service.broker.abstract

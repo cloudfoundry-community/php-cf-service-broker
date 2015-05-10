@@ -1,0 +1,39 @@
+{
+  "name": "cloudfoundry-community/php-cf-service-broker",
+  "description": "A Cloud Foundry service broker made for Cloud Foundry",
+  "keywords": [
+    "Cloud Foundry",
+    "Cf",
+    "Service Broker",
+    "Cloud"
+  ],
+  "require": {
+    "sphring/sphring": "0.12.*",
+    "league/route": "~1.1",
+    "league/plates": "~3.1",
+    "monolog/monolog": "~1.13",
+    "filp/whoops": "~1.1",
+    "doctrine/orm": "2.4.*",
+    "jms/serializer": "0.16.0",
+    "ircmaxell/random-lib": "1.1.*",
+    "sphring/sphring-cache": "dev-master",
+    "ramsey/uuid": "^2.8",
+    "vierbergenlars/php-semver": "^3.0"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Arthur Halet",
+      "email": "arthurh.halet@gmail.com"
+    }
+  ],
+  "bin": ["bin/addUser.php"],
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Sphring\\MicroWebFramework\\": "src/Sphring/MicroWebFramework/"
+    }
+  }
+}

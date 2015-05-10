@@ -1,0 +1,4 @@
+sph-properties-file:
+  - ../config/config.yml
+sph-import:
+  - auth.yml

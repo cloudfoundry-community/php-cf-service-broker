@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="tests/bootstraptravis.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Sphring Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="tap" target="/tmp/sphring/report.tap"/>
+        <log type="junit" target="/tmp/sphring/report.junit.xml"/>
+        <log type="coverage-html" target="/tmp/sphring/coverage" charset="UTF-8" yui="true" highlight="true"/>
+        <log type="coverage-text" target="/tmp/sphring/coverage.txt"/>
+        <log type="coverage-clover" target="/tmp/sphring/logs/clover.xml"/>
+    </logging>
+</phpunit>

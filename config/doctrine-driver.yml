@@ -1,0 +1,10 @@
+#driver: 'pdo_mysql'
+#user: 'root'
+#password: ''
+#host: localhost
+#port: 3306
+#dbname: 'service_broker'
+driver: 'pdo_sqlite'
+user: 'root'
+password: ''
+path: ../cache/service-broker.sqlite

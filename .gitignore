@@ -1,0 +1,7 @@
+/composer.lock
+vendor
+*.phar
+/.idea
+logs
+/config/key.txt
+/cache/service-broker.sqlite

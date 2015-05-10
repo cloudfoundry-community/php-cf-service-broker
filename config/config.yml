@@ -1,0 +1,10 @@
+config:
+  entryPoint: '/app.php'
+  assetsDir: '/assets'
+  debug: false
+  cache: true
+  cacheDir: '/cache'
+  brokerVersion: '2.x'
+security:
+  salt: 'sjflmdsd4ds54%dfjsdfl$'
+  algo: 'md5|sha256'

@@ -1,0 +1,21 @@
+microwebframe.doctrine:
+  class: Sphring\MicroWebFramework\Doctrine\DoctrineBoot
+  methodInit: boot
+  properties:
+    devMode:
+      value: %config.debug%
+    entityFolder:
+      folder: %CONTEXTROOT%/../src/Sphring/MicroWebFramework/Model
+    connection:
+      value:
+        sph-include:
+          - ../config/doctrine-driver.yml
+    cache:
+      ref: microwebframe.doctrine.cache
+    fileCreation:
+      file: %CONTEXTROOT%/..%config.cacheDir%/db.ct
+microwebframe.doctrine.cache:
+  class: Doctrine\Common\Cache\FilesystemCache
+  constructor:
+    1:
+      value: %CONTEXTROOT%/..%config.cacheDir%

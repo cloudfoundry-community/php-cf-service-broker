@@ -1,0 +1,32 @@
+index:
+  route: "/"
+  method: "GET"
+  controller: !! Sphring.MicroWebFramework.Controller.IndexController()
+catalog:
+  route: '/v2/catalog'
+  method: "GET"
+  controller: !! Sphring.MicroWebFramework.Controller.ServiceBroker.Catalog()
+provisioning:
+  route: '/v2/service_instances/{instance_id}'
+  method: "PUT"
+  controller: !! Sphring.MicroWebFramework.Controller.ServiceBroker.Provisioning()
+deprovisioning:
+  route: '/v2/service_instances/{instance_id}'
+  method: "DELETE"
+  controller: !! Sphring.MicroWebFramework.Controller.ServiceBroker.Deprovisioning()
+binding:
+  route: '/v2/service_instances/{instance_id}/service_bindings/{binding_id}'
+  method: "PUT"
+  controller: !! Sphring.MicroWebFramework.Controller.ServiceBroker.Binding()
+binding:
+  route: '/v2/service_instances/{instance_id}/service_bindings/{binding_id}'
+  method: "DELETE"
+  controller: !! Sphring.MicroWebFramework.Controller.ServiceBroker.Unbinding()
+update:
+  route: '/v2/service_instances/{instance_id}'
+  method: "PATCH"
+  controller: !! Sphring.MicroWebFramework.Controller.ServiceBroker.Update()
+notfound:
+  route: "/404"
+  method: "GET"
+  controller: !! Sphring.MicroWebFramework.Controller.NotFoundController()

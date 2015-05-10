@@ -1,0 +1,8 @@
+util.serviceDescribeCreator:
+  class: Sphring\MicroWebFramework\Util\ServiceDescribeCreator
+  methodInit: create
+  properties:
+    doctrineBoot:
+      ref: microwebframe.doctrine
+    services:
+      json: %CONTEXTROOT%/../config/services.json

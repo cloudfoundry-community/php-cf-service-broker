@@ -1,0 +1,41 @@
+sph-properties-file:
+  - ../config/config.yml
+cache:
+  type: cache
+  class:  ArthurH\SphringCache\CacheManager\NullCacheManager
+  cacheSphring: %config.cache%
+  cacheSphringProxies: %config.cache%
+  cacheSphringContext: %config.cache%
+microwebframe.main:
+  class: Sphring\MicroWebFramework\MicroWebFramework
+  properties:
+    templateEngine:
+      ref: microwebframe.engine
+    plateExtensions:
+      ref:
+        asset: microwebframe.platesExtensionAsset
+        route: microwebframe.platesExtensionRoute
+        userSession: microwebframe.platesExtensionUserSession
+    router:
+      ref: microwebframe.routeCollection
+    routes:
+      yml: ../config/routes/route.yml
+    helpers:
+      ref: microwebframe.helpers
+    modeDebug:
+      value: %config.debug%
+microwebframe.engine:
+  class: League\Plates\Engine
+  constructor:
+    1:
+      value: %CONTEXTROOT%/../app/view
+microwebframe.routeCollection:
+  class: League\Route\RouteCollection
+sph-import:
+  - plates-extensions.yml
+  - helpers.yml
+  - doctrine.yml
+  - dao.yml
+  - auth.yml
+  - util.yml
+  - service-brokers.yml
