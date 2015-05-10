@@ -17,7 +17,7 @@ The goal is to provide a php project to quickly implement new [service brokers](
  1. Clone this repo or use `composer create-project cloudfoundry-community/php-cf-service-broker`
  2. Add your service inside [/config/services.json](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/config/services.json) (remove example first)
  3. Create a user by doing this in command line: `php bin/addUser.php [user_name] [password]`
- 4.(optional) Change configuration inside [/config/config.yml](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/config/config.yml)
+ 4. (optional) Change configuration inside [/config/config.yml](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/config/config.yml)
  5. Create the logic inside [/src/Sphring/MicroWebFramework/ServiceBroker/DefaultServiceBroker.php](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/src/Sphring/MicroWebFramework/ServiceBroker/DefaultServiceBroker.php) (I suggest to see the doc from the [doc](http://docs.cloudfoundry.org/services/api.html), no need to follow rest url project handle it)
  6. Register your new service broker by following the [doc](http://docs.cloudfoundry.org/services/managing-service-brokers.html#register-broker)
  7. Service broker is ready and follow rest url given by the [doc](http://docs.cloudfoundry.org/services/api.html)
