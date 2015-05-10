@@ -31,15 +31,15 @@ By default this project use an sqlite database, change to another database by mo
 
 You can add an infinity of service broker to do this follow these steps:
 
- 1. Add another service inside [/config/services.json](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/config/services.json)
- 2. Create a new service broker class and extend [Sphring\MicroWebFramework\ServiceBroker\AbstractServiceBroker](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/src/Sphring/MicroWebFramework/ServiceBroker/AbstractServiceBroker.php)
- 3. Register your new broker by adding entry in [/sphring/service-broker.yml](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/config/services.json) like this:
+ - Add another service inside [/config/services.json](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/config/services.json)
+ - Create a new service broker class and extend [Sphring\MicroWebFramework\ServiceBroker\AbstractServiceBroker](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/src/Sphring/MicroWebFramework/ServiceBroker/AbstractServiceBroker.php)
+ - Register your new broker by adding entry in [/sphring/service-broker.yml](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/config/services.json) like this:
 ```yaml
 service.broker.[your broker name]:
      class: Sphring\MicroWebFramework\ServiceBroker\[your broker class name]
      extend: service.broker.abstract
 ```
- 4. Add in this same file a new entry in `service.broker.list`, example:
+ - Add in this same file a new entry in `service.broker.list`, example:
 ```yaml
 service.broker.list:
   class: \ArrayObject
@@ -49,7 +49,7 @@ service.broker.list:
           default: service.broker.default
           [service name from services.json]: service.broker.[your broker name]
 ```
- 5. Your new service broker is available
+ - Your new service broker is available
 
 ## Todo
 
