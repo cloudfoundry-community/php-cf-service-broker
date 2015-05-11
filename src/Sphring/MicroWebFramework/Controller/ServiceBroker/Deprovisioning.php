@@ -14,7 +14,6 @@ namespace Sphring\MicroWebFramework\Controller\ServiceBroker;
 
 
 use Sphring\MicroWebFramework\Controller\IndexController;
-use Sphring\MicroWebFramework\Model\ServiceDescribe;
 use Sphring\MicroWebFramework\Model\ServiceInstance;
 
 class Deprovisioning extends IndexController
@@ -35,9 +34,13 @@ class Deprovisioning extends IndexController
             $serviceBroker->afterDeprovisioning($instanceId);
             return '{}';
         }
-        $serviceBroker->deprovisioning($serviceInstance);
+        $returnFromMethod = $serviceBroker->deprovisioning($serviceInstance);
+
         $serviceBroker->afterDeprovisioning($instanceId);
         $em->flush();
+        if ($returnFromMethod !== null) {
+            return $returnFromMethod;
+        }
         return '{}';
     }
 }

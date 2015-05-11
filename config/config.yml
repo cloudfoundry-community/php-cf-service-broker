@@ -1,10 +1,10 @@
 config:
-  entryPoint: '/app.php'
-  assetsDir: '/assets'
-  debug: false
-  cache: true
+  entryPoint: '/app.php' # you should not touch it
+  assetsDir: '/assets' # you should not touch it
+  debug: false # set to true to show error in browser or stdout
+  cache: true # Set to false to remove caching
   cacheDir: '/cache'
-  brokerVersion: '2.x'
+  brokerVersion: '2.x' # Semantical version for broker
 security:
-  salt: 'sjflmdsd4ds54%dfjsdfl$'
-  algo: 'md5|sha256'
+  salt: 'sjflmdsd4ds54%dfjsdfl$' # Salt for user creation, change it with random values
+  algo: 'md5|sha256' # use pipe to add a new algo to create password

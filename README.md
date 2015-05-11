@@ -51,7 +51,20 @@ service.broker.list:
           default: service.broker.default
           [service name from services.json]: service.broker.[your broker name]
 ```
+ - Unvalidate cache by doing in command line `touch sphring/main.yml` or set cache to `false` inside [/config/config.yml](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/config/config.yml)
  - Your new service broker is available
+
+## Run the tests
+
+Tests use [PHPUnit](https://phpunit.de/).
+Run with your command line:
+`vendor/bin/phpunit --bootstrap tests\bootstrap.php --no-configuration tests`
+
+### Add a service to test
+
+ 1. Update [services.json](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/tests/Sphring/MicroWebFramework/Resources/Sphring/services.json) inside tests configuration directory.
+ 2. Update [service-broker.yml](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/tests/Sphring/MicroWebFramework/Resources/Sphring/service-broker.yml) inside tests configuration directory.
+ 3. Run `vendor/bin/phpunit --bootstrap tests\bootstrap.php --no-configuration tests`
 
 ## Todo
 

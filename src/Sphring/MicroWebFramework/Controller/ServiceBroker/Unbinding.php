@@ -14,7 +14,6 @@ namespace Sphring\MicroWebFramework\Controller\ServiceBroker;
 
 
 use Sphring\MicroWebFramework\Controller\IndexController;
-use Sphring\MicroWebFramework\Model\ServiceDescribe;
 use Sphring\MicroWebFramework\Model\ServiceInstance;
 
 class Unbinding extends IndexController
@@ -30,11 +29,20 @@ class Unbinding extends IndexController
         $bindingId = $args['binding_id'];
         $serviceBroker = $this->getServiceBroker($_GET['service_id']);
         $em = $this->getDoctrineBoot()->getEntityManager();
-        $repo = $em->getRepository(ServiceInstance::class);
-
-        $serviceBroker->unbinding($repo->find($instanceId));
+        $repoServiceInstance = $em->getRepository(ServiceInstance::class);
+        $repoBinding = $em->getRepository(\Sphring\MicroWebFramework\Model\Binding::class);
+        $binding = $repoBinding->find($bindingId);
+        $serviceInstance = $repoServiceInstance->find($instanceId);
+        if ($binding === null || $serviceInstance === null) {
+            $serviceBroker->responseGone();
+            return '{}';
+        }
+        $returnFromMethod = $serviceBroker->unbinding($repoServiceInstance->find($instanceId), $repoBinding->find($bindingId));
         $serviceBroker->afterUnbinding($instanceId, $bindingId);
         $em->flush();
+        if ($returnFromMethod !== null) {
+            return $returnFromMethod;
+        }
         return '{}';
     }
 }

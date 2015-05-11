@@ -14,7 +14,6 @@ namespace Sphring\MicroWebFramework\Controller\ServiceBroker;
 
 
 use Sphring\MicroWebFramework\Controller\IndexController;
-use Sphring\MicroWebFramework\Model\ServiceDescribe;
 use Sphring\MicroWebFramework\Model\ServiceInstance;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -45,7 +44,11 @@ class Update extends IndexController
         if ($serviceInstance === null) {
             return '{}';
         }
-        $serviceBroker->update($serviceInstance);
+        $returnFromMethod = $serviceBroker->update($serviceInstance);
+        $em->flush();
+        if ($returnFromMethod !== null) {
+            return $returnFromMethod;
+        }
         return '{}';
     }
 }

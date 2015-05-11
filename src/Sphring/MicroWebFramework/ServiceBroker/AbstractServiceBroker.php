@@ -192,9 +192,9 @@ abstract class AbstractServiceBroker
 
     abstract public function update(ServiceInstance $serviceInstance);
 
-    abstract public function binding(ServiceInstance $serviceInstance);
+    abstract public function binding(ServiceInstance $serviceInstance, Binding $binding);
 
-    abstract public function unbinding(ServiceInstance $serviceInstance);
+    abstract public function unbinding(ServiceInstance $serviceInstance, Binding $binding);
 
     abstract public function deprovisioning(ServiceInstance $serviceInstance);
 

@@ -29,17 +29,22 @@ class Binding extends IndexController
         $args = $this->getArgs();
         $instanceId = $args['instance_id'];
         $bindingId = $args['binding_id'];
+        $returnFromMethod = null;
         $serviceBroker = $this->getServiceBroker($data['service_id']);
-
+        $em = $this->getDoctrineBoot()->getEntityManager();
+        $repoBinding = $em->getRepository(\Sphring\MicroWebFramework\Model\Binding::class);
         $em = $this->getDoctrineBoot()->getEntityManager();
         $serviceInstance = $serviceBroker->beforeBinding($data, $instanceId, $bindingId);
         if ($this->response->getStatusCode() === Response::HTTP_CONFLICT) {
             return '{}';
         }
         if ($this->response->getStatusCode() === Response::HTTP_CREATED) {
-            $serviceBroker->binding($serviceInstance);
+            $returnFromMethod = $serviceBroker->binding($serviceInstance, $repoBinding->find($bindingId));
         }
         $em->flush();
+        if($returnFromMethod !== null){
+            return $returnFromMethod;
+        }
         return json_encode(['credentials' => $serviceInstance->getCredentials()]);
     }
 }

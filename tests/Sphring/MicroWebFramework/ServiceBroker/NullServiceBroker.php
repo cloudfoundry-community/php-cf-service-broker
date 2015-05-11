@@ -14,6 +14,7 @@
 namespace Sphring\MicroWebFramework\ServiceBroker;
 
 
+use Sphring\MicroWebFramework\Model\Binding;
 use Sphring\MicroWebFramework\Model\ServiceInstance;
 
 class NullServiceBroker extends AbstractServiceBroker
@@ -30,12 +31,12 @@ class NullServiceBroker extends AbstractServiceBroker
 
     }
 
-    public function binding(ServiceInstance $serviceInstance)
+    public function binding(ServiceInstance $serviceInstance, Binding $binding)
     {
         $serviceInstance->setCredentials(NullServiceBroker::$CREDENTIALS);
     }
 
-    public function unbinding(ServiceInstance $serviceInstance)
+    public function unbinding(ServiceInstance $serviceInstance, Binding $binding)
     {
 
     }

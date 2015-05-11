@@ -36,6 +36,10 @@ class Provisioning extends IndexController
         if ($serviceInstance === null) {
             return '{}';
         }
-        return $serviceBroker->provisioning($serviceInstance);
+        $returnFromMethod = $serviceBroker->provisioning($serviceInstance);
+        if ($returnFromMethod !== null) {
+            return $returnFromMethod;
+        }
+        return '{}';
     }
 }
