@@ -24,10 +24,11 @@ class Provisioning extends IndexController
         if ($action !== null) {
             return $action;
         }
-        $putData = $this->getPutData();
+        $putData = $this->getInputData();
         $data = json_decode($putData, true);
         $args = $this->getArgs();
         $instanceId = $args['instance_id'];
+        var_dump($putData);
         $serviceBroker = $this->getServiceBroker($data['service_id']);
         $em = $this->getDoctrineBoot()->getEntityManager();
         $serviceInstance = $serviceBroker->beforeProvisioning($data, $instanceId);

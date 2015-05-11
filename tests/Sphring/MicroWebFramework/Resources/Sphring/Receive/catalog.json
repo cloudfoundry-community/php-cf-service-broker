@@ -1,0 +1,28 @@
+{
+  "services": [
+    {
+      "id": "c76ed0a4-9a04-5710-90c2-75e955697b08",
+      "name": "mysql",
+      "description": "A MySQL-compatible relational database",
+      "plans": [
+        {
+          "id": "97f78da1-48ce-51dc-b550-6de43ee3cc77",
+          "name": "small",
+          "description": "A small shared database with 100mb storage quota and 10 connections",
+          "free": true
+        },
+        {
+          "id": "78aa3596-0296-5ed7-b600-42adecddbef9",
+          "name": "large",
+          "description": "A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections",
+          "free": true
+        }
+      ],
+      "dashboard_client": {
+        "id": "client-id-1",
+        "secret": "secret-1",
+        "redirect_uri": "https:\/\/dashboard.service.com"
+      }
+    }
+  ]
+}

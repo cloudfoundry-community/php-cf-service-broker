@@ -1,0 +1,17 @@
+microwebframe.helpers:
+  class: \ArrayObject
+  constructor:
+    1:
+      ref:
+        engine: microwebframe.engine
+        microWebFramework: microwebframe.main
+        doctrineBoot: microwebframe.doctrine
+        cache: microwebframe.doctrine.cache
+        basicAuth: basicauth
+        serviceBrokers: service.broker.list
+        brokerVersionExpression: expression.broker.version
+expression.broker.version:
+  class: vierbergenlars\SemVer\expression
+  constructor:
+    1:
+      value: %config.brokerVersion%

@@ -33,7 +33,7 @@ abstract class AbstractController
 {
     protected $helpers = [];
     protected $args = [];
-
+    protected $inputData;
     /**
      * @var Request
      */
@@ -168,20 +168,20 @@ abstract class AbstractController
         $this->response = $response;
     }
 
-    public function getPutData()
+    public function getInputData()
     {
-        return file_get_contents("php://input");
+        if (empty($this->inputData)) {
+            $this->inputData = file_get_contents("php://input");
+        }
+        return $this->inputData;
     }
 
-    public function jsonDecode($s, $assoc = true)
+    /**
+     * @param mixed $inputData
+     */
+    public function setInputData($inputData)
     {
-        $s = str_replace(
-            array('"', "'"),
-            array('\"', '"'),
-            $s
-        );
-        $s = preg_replace('/([^:{}\[\]]+,)/i', '"\1"', $s);
-        echo $s;
-        return json_decode($s, $assoc);
+        $this->inputData = $inputData;
     }
+
 }

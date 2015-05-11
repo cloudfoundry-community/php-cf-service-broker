@@ -1,0 +1,19 @@
+microwebframe.platesExtensionAsset:
+  class: Sphring\MicroWebFramework\PlatesExtension\Asset
+  properties:
+    dir:
+      value: %config.assetsDir%
+microwebframe.platesExtensionUserSession:
+  class: Sphring\MicroWebFramework\PlatesExtension\UserSession
+  properties:
+    devMode:
+      value: %config.debug%
+    doctrineBoot:
+      ref: microwebframe.doctrine
+microwebframe.platesExtensionRoute:
+  class: Sphring\MicroWebFramework\PlatesExtension\RoutePlates
+  properties:
+    microWebFramework:
+      ref: microwebframe.main
+    fileEntryPoint:
+      value: %config.entryPoint%

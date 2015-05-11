@@ -18,7 +18,7 @@ binding:
   route: '/v2/service_instances/{instance_id}/service_bindings/{binding_id}'
   method: "PUT"
   controller: !! Sphring.MicroWebFramework.Controller.ServiceBroker.Binding()
-binding:
+unbinding:
   route: '/v2/service_instances/{instance_id}/service_bindings/{binding_id}'
   method: "DELETE"
   controller: !! Sphring.MicroWebFramework.Controller.ServiceBroker.Unbinding()

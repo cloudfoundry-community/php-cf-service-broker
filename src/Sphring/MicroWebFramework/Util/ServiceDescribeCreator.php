@@ -35,10 +35,34 @@ class ServiceDescribeCreator
         }
     }
 
+    public function createServiceDescribe(array $service)
+    {
+        $em = $this->doctrineBoot->getEntityManager();
+        $repo = $em->getRepository(ServiceDescribe::class);
+        $id = Uuid::uuid5(Uuid::NAMESPACE_OID, $service['name'])->toString();
+        $plans = [];
+        foreach ($service['plans'] as $plan) {
+            $plans[] = $this->createPlan($plan);
+        }
+        $bindable = (!isset($service['bindable']) || $service['bindable']) ? true : false;
+        $serviceDescribe = $repo->find($id);
+        if ($serviceDescribe !== null) {
+            $serviceDescribe->setPlans($plans);
+            $serviceDescribe->setBindable($bindable);
+        } else {
+            $serviceDescribe = new ServiceDescribe($id, $service['name'], $service['description'], $plans, $bindable);
+        }
+        if (isset($service['dashboard_client'])) {
+            $serviceDescribe->setDashboard($this->createDashboard($service['dashboard_client']));
+        }
+        $em->persist($serviceDescribe);
+        $em->flush();
+    }
+
     public function createPlan(array $plan)
     {
         $em = $this->doctrineBoot->getEntityManager();
-        $id = Uuid::uuid5(Uuid::NAMESPACE_OID, $plan['name']);
+        $id = Uuid::uuid5(Uuid::NAMESPACE_OID, $plan['name'])->toString();
         $repo = $em->getRepository(Plan::class);
         $planObject = $repo->find($id);
         $free = (!isset($service['free']) || $service['free']) ? true : false;
@@ -65,30 +89,6 @@ class ServiceDescribeCreator
         $dashboardObject = new Dashboard($dashboard['id'], $dashboard['secret'], $dashboard['redirect_uri']);
         $em->persist($dashboardObject);
         return $dashboardObject;
-    }
-
-    public function createServiceDescribe(array $service)
-    {
-        $em = $this->doctrineBoot->getEntityManager();
-        $repo = $em->getRepository(ServiceDescribe::class);
-        $id = Uuid::uuid5(Uuid::NAMESPACE_OID, $service['name']);
-        $plans = [];
-        foreach ($service['plans'] as $plan) {
-            $plans[] = $this->createPlan($plan);
-        }
-        $bindable = (!isset($service['bindable']) || $service['bindable']) ? true : false;
-        $serviceDescribe = $repo->find($id);
-        if ($serviceDescribe !== null) {
-            $serviceDescribe->setPlans($plans);
-            $serviceDescribe->setBindable($bindable);
-        } else {
-            $serviceDescribe = new ServiceDescribe($id, $service['name'], $service['description'], $plans, $bindable);
-        }
-        if (isset($service['dashboard_client'])) {
-            $serviceDescribe->setDashboard($this->createDashboard($service['dashboard_client']));
-        }
-        $em->persist($serviceDescribe);
-        $em->flush();
     }
 
     /**

@@ -93,7 +93,7 @@ class Binding
             return;
         }
         $this->serviceInstances->add($serviceInstance);
-        $serviceInstance->addApp($this);
+        $serviceInstance->addBinding($this);
     }
 
     /**
@@ -105,7 +105,7 @@ class Binding
             return;
         }
         $this->serviceInstances->removeElement($serviceInstance);
-        $serviceInstance->removeApp($this);
+        $serviceInstance->removeBinding($this);
     }
 
     /**

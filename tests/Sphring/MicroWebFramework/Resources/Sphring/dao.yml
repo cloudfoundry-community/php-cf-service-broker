@@ -1,0 +1,5 @@
+dao.abstract:
+  type: abstract
+  properties:
+    doctrineBoot:
+      ref: microwebframe.doctrine

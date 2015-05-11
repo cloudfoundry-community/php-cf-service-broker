@@ -15,6 +15,7 @@ namespace Sphring\MicroWebFramework\Controller\ServiceBroker;
 
 use Sphring\MicroWebFramework\Controller\IndexController;
 use Sphring\MicroWebFramework\Model\ServiceDescribe;
+use Sphring\MicroWebFramework\Model\ServiceInstance;
 
 class Deprovisioning extends IndexController
 {
@@ -24,15 +25,17 @@ class Deprovisioning extends IndexController
         if ($action !== null) {
             return $action;
         }
-        $putData = $this->getPutData();
-        $data = json_decode($putData, true);
         $args = $this->getArgs();
         $instanceId = $args['instance_id'];
-        $serviceBroker = $this->getServiceBroker($data['service_id']);
+        $serviceBroker = $this->getServiceBroker($_GET['service_id']);
         $em = $this->getDoctrineBoot()->getEntityManager();
-        $repo = $em->getRepository(ServiceDescribe::class);
-
-        $serviceBroker->deprovisioning($repo->find($instanceId));
+        $repo = $em->getRepository(ServiceInstance::class);
+        $serviceInstance = $repo->find($instanceId);
+        if ($serviceInstance === null) {
+            $serviceBroker->afterDeprovisioning($instanceId);
+            return '{}';
+        }
+        $serviceBroker->deprovisioning($serviceInstance);
         $serviceBroker->afterDeprovisioning($instanceId);
         $em->flush();
         return '{}';

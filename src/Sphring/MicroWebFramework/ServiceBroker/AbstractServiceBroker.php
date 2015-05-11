@@ -33,44 +33,12 @@ abstract class AbstractServiceBroker
      */
     protected $doctrineBoot;
 
-    public function responseCreated()
-    {
-        if ($this->response === null) {
-            return;
-        }
-        $this->response->setStatusCode(Response::HTTP_CREATED);
-    }
-
-    public function responseConflict()
-    {
-        if ($this->response === null) {
-            return;
-        }
-        $this->response->setStatusCode(Response::HTTP_CONFLICT);
-    }
-
     public function responseUnprocessableEntity()
     {
         if ($this->response === null) {
             return;
         }
         $this->response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
-    }
-
-    public function responseOk()
-    {
-        if ($this->response === null) {
-            return;
-        }
-        $this->response->setStatusCode(Response::HTTP_OK);
-    }
-
-    public function responseGone()
-    {
-        if ($this->response === null) {
-            return;
-        }
-        $this->response->setStatusCode(Response::HTTP_GONE);
     }
 
     public function beforeProvisioning($data, $instanceId)
@@ -92,6 +60,51 @@ abstract class AbstractServiceBroker
         $em->persist($serviceInstance);
         $this->responseCreated();
         return $serviceInstance;
+    }
+
+    public function checkServiceInstance(ServiceInstance $serviceInstance, $data)
+    {
+        if (isset($data['service_id']) && $serviceInstance->getServiceDescribe()->getId() !== $data['service_id']) {
+            $this->responseConflict();
+            return;
+        }
+        if (isset($data['plan_id']) && $serviceInstance->getPlan()->getId() !== $data['plan_id']) {
+            $this->responseConflict();
+            return;
+        }
+        if (isset($data['organization_guid']) && $serviceInstance->getOrganization() !== $data['organization_guid']) {
+            $this->responseConflict();
+            return;
+        }
+        if (isset($data['space_guid']) && $serviceInstance->getSpace() !== $data['space_guid']) {
+            $this->responseConflict();
+            return;
+        }
+        $this->responseOk();
+    }
+
+    public function responseConflict()
+    {
+        if ($this->response === null) {
+            return;
+        }
+        $this->response->setStatusCode(Response::HTTP_CONFLICT);
+    }
+
+    public function responseOk()
+    {
+        if ($this->response === null) {
+            return;
+        }
+        $this->response->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function responseCreated()
+    {
+        if ($this->response === null) {
+            return;
+        }
+        $this->response->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function beforeUpdate($planId, $instanceId)
@@ -124,12 +137,12 @@ abstract class AbstractServiceBroker
         }
         if ($app->getServiceInstances()->contains($serviceInstance)) {
             $this->checkServiceInstance($serviceInstance, $data);
-            return null;
+            return $serviceInstance;
         }
 
         $app->addServiceInstance($serviceInstance);
         $em->persist($app);
-        $this->responseOk();
+        $this->responseCreated();
         return $serviceInstance;
     }
 
@@ -152,6 +165,14 @@ abstract class AbstractServiceBroker
         return $serviceInstance;
     }
 
+    public function responseGone()
+    {
+        if ($this->response === null) {
+            return;
+        }
+        $this->response->setStatusCode(Response::HTTP_GONE);
+    }
+
     public function afterDeprovisioning($instanceId)
     {
         $em = $this->doctrineBoot->getEntityManager();
@@ -163,7 +184,7 @@ abstract class AbstractServiceBroker
         }
 
         $em->remove($serviceInstance);
-        $this->responseCreated();
+        $this->responseOk();
         return $serviceInstance;
     }
 
@@ -176,27 +197,6 @@ abstract class AbstractServiceBroker
     abstract public function unbinding(ServiceInstance $serviceInstance);
 
     abstract public function deprovisioning(ServiceInstance $serviceInstance);
-
-    public function checkServiceInstance(ServiceInstance $serviceInstance, $data)
-    {
-        if (isset($data['service_id']) && $serviceInstance->getServiceDescribe()->getId() !== $data['service_id']) {
-            $this->responseConflict();
-            return;
-        }
-        if (isset($data['plan_id']) && $serviceInstance->getPlan()->getId() !== $data['plan_id']) {
-            $this->responseConflict();
-            return;
-        }
-        if (isset($data['organization_guid']) && $serviceInstance->getOrganization() !== $data['organization_guid']) {
-            $this->responseConflict();
-            return;
-        }
-        if (isset($data['space_guid']) && $serviceInstance->getSpace() !== $data['space_guid']) {
-            $this->responseConflict();
-            return;
-        }
-        $this->responseOk();
-    }
 
     /**
      * @return Response

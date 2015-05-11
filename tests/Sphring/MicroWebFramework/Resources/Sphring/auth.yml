@@ -1,0 +1,14 @@
+encoder:
+  class: Sphring\MicroWebFramework\Security\Encoder
+  properties:
+    salt:
+      value: %security.salt%
+    encoders:
+      value: %security.algo%
+basicauth:
+  class: Sphring\MicroWebFramework\Auth\HttpBasicAuthentifier
+  properties:
+    encoder:
+      ref: encoder
+    validUsers:
+      yml: users.yml

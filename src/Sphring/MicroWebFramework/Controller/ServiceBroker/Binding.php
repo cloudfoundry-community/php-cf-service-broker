@@ -14,6 +14,7 @@ namespace Sphring\MicroWebFramework\Controller\ServiceBroker;
 
 
 use Sphring\MicroWebFramework\Controller\IndexController;
+use Symfony\Component\HttpFoundation\Response;
 
 class Binding extends IndexController
 {
@@ -23,18 +24,21 @@ class Binding extends IndexController
         if ($action !== null) {
             return $action;
         }
-        $putData = $this->getPutData();
+        $putData = $this->getInputData();
         $data = json_decode($putData, true);
         $args = $this->getArgs();
         $instanceId = $args['instance_id'];
         $bindingId = $args['binding_id'];
         $serviceBroker = $this->getServiceBroker($data['service_id']);
+
         $em = $this->getDoctrineBoot()->getEntityManager();
         $serviceInstance = $serviceBroker->beforeBinding($data, $instanceId, $bindingId);
-        if ($serviceInstance === null) {
+        if ($this->response->getStatusCode() === Response::HTTP_CONFLICT) {
             return '{}';
         }
-        $serviceBroker->binding($serviceInstance);
+        if ($this->response->getStatusCode() === Response::HTTP_CREATED) {
+            $serviceBroker->binding($serviceInstance);
+        }
         $em->flush();
         return json_encode(['credentials' => $serviceInstance->getCredentials()]);
     }

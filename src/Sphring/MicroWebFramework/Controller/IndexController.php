@@ -16,7 +16,9 @@ namespace Sphring\MicroWebFramework\Controller;
 
 use Sphring\MicroWebFramework\Auth\HttpBasicAuthentifier;
 use Sphring\MicroWebFramework\Model\ServiceDescribe;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use vierbergenlars\SemVer\SemVerException;
 use vierbergenlars\SemVer\version;
 
 class IndexController extends AbstractController
@@ -25,7 +27,14 @@ class IndexController extends AbstractController
     public function action()
     {
         $version = $this->getRequest()->headers->get('X-Broker-API-Version') . '.0';
-        if (empty($version) || !$this->getBrokerVersionExpression()->satisfiedBy(new version($version))) {
+        try {
+            $satisfy = $this->getBrokerVersionExpression()->satisfiedBy(new version($version));
+        } catch (SemVerException $e) {
+            $this->response->setStatusCode(Response::HTTP_PRECONDITION_FAILED);
+            return Response::$statusTexts[Response::HTTP_PRECONDITION_FAILED];
+        }
+
+        if (empty($version) || !$satisfy) {
             $this->response->setStatusCode(Response::HTTP_PRECONDITION_FAILED);
             return Response::$statusTexts[Response::HTTP_PRECONDITION_FAILED];
         }
@@ -49,6 +58,7 @@ class IndexController extends AbstractController
         if ($serviceDescribe !== null && !empty($serviceBrokers[$serviceDescribe->getName()])) {
             $serviceBroker = $serviceBrokers[$serviceDescribe->getName()];
         }
+        $serviceBroker->setResponse($this->response);
         return $serviceBroker;
     }
 }

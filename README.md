@@ -53,6 +53,6 @@ service.broker.list:
 
 ## Todo
 
- - Add tests
+ - ~~Add tests~~
  - Follow [new spec](https://docs.google.com/document/d/12ghe1B3YPhHLGcAOgJe_1PcpDUbhaaz1RentoWepwsA/edit?usp=sharing) to hand asynchronous service broker
  - Make it Cloud Foundry ready to run as an app inside Cloud Foundry by using [cf-helper-php](https://github.com/cloudfoundry-community/cf-helper-php)

@@ -83,7 +83,7 @@ class ServiceInstance
         $this->plan = $plan;
         $this->organization = $organization;
         $this->space = $space;
-        $this->apps = new ArrayCollection();
+        $this->bindings = new ArrayCollection();
     }
 
 

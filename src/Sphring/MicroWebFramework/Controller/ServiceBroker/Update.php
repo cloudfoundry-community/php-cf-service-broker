@@ -14,6 +14,9 @@ namespace Sphring\MicroWebFramework\Controller\ServiceBroker;
 
 
 use Sphring\MicroWebFramework\Controller\IndexController;
+use Sphring\MicroWebFramework\Model\ServiceDescribe;
+use Sphring\MicroWebFramework\Model\ServiceInstance;
+use Symfony\Component\HttpFoundation\Response;
 
 class Update extends IndexController
 {
@@ -23,12 +26,20 @@ class Update extends IndexController
         if ($action !== null) {
             return $action;
         }
-        $putData = $this->getPutData();
+        $putData = $this->getInputData();
         $data = json_decode($putData, true);
         $args = $this->getArgs();
         $instanceId = $args['instance_id'];
-        $serviceBroker = $this->getServiceBroker($data['service_id']);
         $em = $this->getDoctrineBoot()->getEntityManager();
+        $repoServiceInstance = $em->getRepository(ServiceInstance::class);
+        $serviceInstance = $repoServiceInstance->find($instanceId);
+        if ($serviceInstance === null) {
+            $this->response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+            $error = ["description" => "Service not found."];
+            return json_encode($error);
+        }
+        $serviceBroker = $this->getServiceBroker($serviceInstance->getServiceDescribe()->getId());
+
         $serviceInstance = $serviceBroker->beforeUpdate($data['plan_id'], $instanceId);
         $em->flush();
         if ($serviceInstance === null) {

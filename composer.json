@@ -8,6 +8,10 @@
     "Cloud"
   ],
   "require": {
+    "php": ">=5.5",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*",
+    "ext-pdo_sqlite": "*",
     "sphring/sphring": "0.12.*",
     "league/route": "~1.1",
     "league/plates": "~3.1",
@@ -15,7 +19,6 @@
     "filp/whoops": "~1.1",
     "doctrine/orm": "2.4.*",
     "jms/serializer": "0.16.0",
-    "ircmaxell/random-lib": "1.1.*",
     "sphring/sphring-cache": "dev-master",
     "ramsey/uuid": "^2.8",
     "vierbergenlars/php-semver": "^3.0"

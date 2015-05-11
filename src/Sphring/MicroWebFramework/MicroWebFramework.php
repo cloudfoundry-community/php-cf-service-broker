@@ -27,7 +27,7 @@ use Whoops\Run;
 
 class MicroWebFramework
 {
-    private static $validMethod = ['GET', 'PUT', 'DELETE', 'POST'];
+    private static $validMethod = ['GET', 'PUT', 'DELETE', 'POST', 'PATCH'];
     private $routes;
     /**
      * @var RouteCollection

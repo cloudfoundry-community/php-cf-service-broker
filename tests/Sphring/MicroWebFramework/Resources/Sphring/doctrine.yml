@@ -1,0 +1,23 @@
+microwebframe.doctrine:
+  class: Sphring\MicroWebFramework\Doctrine\DoctrineBoot
+  methodInit: boot
+  properties:
+    devMode:
+      value: true
+    entityFolder:
+      folder: %CONTEXTROOT%/../../../../../src/Sphring/MicroWebFramework/Model
+    connection:
+      value:
+        driver: 'pdo_sqlite'
+        user: 'root'
+        password: ''
+        memory: true
+    cache:
+      ref: microwebframe.doctrine.cache
+    fileCreation:
+      file: %CONTEXTROOT%/db.ct
+microwebframe.doctrine.cache:
+  class: Doctrine\Common\Cache\FilesystemCache
+  constructor:
+    1:
+      value: %CONTEXTROOT%/../../../../../%config.cacheDir%
