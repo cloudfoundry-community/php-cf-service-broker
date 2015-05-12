@@ -26,6 +26,7 @@ class IndexController extends AbstractController
 
     public function action()
     {
+
         $version = $this->getRequest()->headers->get('X-Broker-API-Version') . '.0';
         try {
             $satisfy = $this->getBrokerVersionExpression()->satisfiedBy(new version($version));
@@ -39,6 +40,7 @@ class IndexController extends AbstractController
             return Response::$statusTexts[Response::HTTP_PRECONDITION_FAILED];
         }
         $basicAuth = $this->getBasicAuth();
+        $basicAuth->setRequest($this->request);
         if (!$basicAuth->auth()) {
             $this->response->setStatusCode(Response::HTTP_UNAUTHORIZED);
             $this->response->headers->add(['WWW-Authenticate' => 'Basic realm="' . HttpBasicAuthentifier::REALM . '"']);

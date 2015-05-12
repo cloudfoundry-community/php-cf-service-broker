@@ -12,6 +12,8 @@ microwebframe.doctrine:
           - ../config/doctrine-driver.yml
     cache:
       ref: microwebframe.doctrine.cache
+    cloudFoundryBoot:
+      ref: util.cloudFoundryBoot
     fileCreation:
       file: %CONTEXTROOT%/..%config.cacheDir%/db.ct
 microwebframe.doctrine.cache:

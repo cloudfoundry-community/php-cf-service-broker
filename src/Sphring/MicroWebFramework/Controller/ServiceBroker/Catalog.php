@@ -14,6 +14,8 @@ namespace Sphring\MicroWebFramework\Controller\ServiceBroker;
 
 
 use Sphring\MicroWebFramework\Controller\IndexController;
+use Sphring\MicroWebFramework\Model\Metadata;
+use Sphring\MicroWebFramework\Model\Plan;
 use Sphring\MicroWebFramework\Model\ServiceDescribe;
 
 class Catalog extends IndexController
@@ -30,31 +32,74 @@ class Catalog extends IndexController
         $serviceDescribes = $repo->findAll();
         $services = [];
         foreach ($serviceDescribes as $serviceDescribe) {
-            $service = [];
-            if (!$serviceDescribe instanceof ServiceDescribe) {
-                continue;
-            }
-            $service['id'] = $serviceDescribe->getId();
-            $service['name'] = $serviceDescribe->getName();
-            $service['description'] = $serviceDescribe->getDescription();
-            $service['plans'] = [];
-            foreach ($serviceDescribe->getPlans() as $plan) {
-                $planJson = [];
-                $planJson['id'] = $plan->getId();
-                $planJson['name'] = $plan->getName();
-                $planJson['description'] = $plan->getDescription();
-                $planJson['free'] = $plan->isFree();
-                $service['plans'][] = $planJson;
-            }
-            if ($serviceDescribe->getDashboard() === null) {
-                $services['services'][] = $service;
-                continue;
-            }
-            $service['dashboard_client']['id'] = $serviceDescribe->getDashboard()->getId();
-            $service['dashboard_client']['secret'] = $serviceDescribe->getDashboard()->getSecret();
-            $service['dashboard_client']['redirect_uri'] = $serviceDescribe->getDashboard()->getRedirectUri();
-            $services['services'][] = $service;
+
+            $services['services'][] = $this->getServiceDescribeAsArray($serviceDescribe);
         }
         return json_encode($services);
+    }
+
+    public function getServiceDescribeAsArray(ServiceDescribe $serviceDescribe)
+    {
+        $service = [];
+        $service['id'] = $serviceDescribe->getId();
+        $service['name'] = $serviceDescribe->getName();
+        $service['description'] = $serviceDescribe->getDescription();
+        $service['plan_updateable'] = $serviceDescribe->isPlanUpdateable();
+        $service['requires'] = $serviceDescribe->getRequires();
+        $service['tags'] = $serviceDescribe->getTags();
+        $service['plans'] = [];
+        foreach ($serviceDescribe->getPlans() as $plan) {
+            $service['plans'][] = $this->getPlanAsArray($plan);
+        }
+        if ($serviceDescribe->getMetadata() !== null) {
+            $service['metadata'] = $this->getMetadataServiceDescribeAsArray($serviceDescribe->getMetadata());
+        }
+        if ($serviceDescribe->getDashboard() === null) {
+            $services['services'][] = $service;
+            return $service;
+        }
+        $service['dashboard_client']['id'] = $serviceDescribe->getDashboard()->getId();
+        $service['dashboard_client']['secret'] = $serviceDescribe->getDashboard()->getSecret();
+        $service['dashboard_client']['redirect_uri'] = $serviceDescribe->getDashboard()->getRedirectUri();
+        return $service;
+    }
+
+    public function getPlanAsArray(Plan $plan)
+    {
+        $planArray = [];
+        $planArray['id'] = $plan->getId();
+        $planArray['name'] = $plan->getName();
+        $planArray['description'] = $plan->getDescription();
+        $planArray['free'] = $plan->isFree();
+        if ($plan->getMetadata() !== null) {
+            $planArray['metadata'] = $this->getMetadataPlanAsArray($plan->getMetadata());
+        }
+        return $planArray;
+    }
+
+    public function getMetadataPlanAsArray(Metadata $metadata)
+    {
+        $metadataArray = [];
+        $metadataArray['name'] = $metadata->getName();
+        $metadataArray['description'] = $metadata->getDescription();
+        $metadataArray['bullets'] = $metadata->getBullets();
+        $metadataArray['costs'] = $metadata->getCosts();
+        $metadataArray['displayName'] = $metadata->getDisplayName();
+        return $metadataArray;
+    }
+
+    public function getMetadataServiceDescribeAsArray(Metadata $metadata)
+    {
+        $metadataArray = [];
+        $metadataArray['name'] = $metadata->getName();
+        $metadataArray['description'] = $metadata->getDescription();
+        $metadataArray['displayName'] = $metadata->getDisplayName();
+        $metadataArray['imageUrl'] = $metadata->getImageUrl();
+        $metadataArray['longDescription'] = $metadata->getLongDescription();
+        $metadataArray['providerDisplayName'] = $metadata->getProviderDisplayName();
+        $metadataArray['documentationUrl'] = $metadata->getDocumentationUrl();
+        $metadataArray['supportUrl'] = $metadata->getSupportUrl();
+
+        return $metadataArray;
     }
 }

@@ -1,0 +1,12 @@
+---
+#Generated manifest
+applications:
+- name: php-cf-service-broker
+  memory: 1G
+  instances: 1
+  path: ./
+  host: php-cf-service-broker
+  # Bind your database
+  #services:
+  # - test-sb-php
+buildpack: https://github.com/cloudfoundry/php-buildpack.git # cause we need composer alpha10 and current php_buildpack on run.pivotal.io is not up-to-date

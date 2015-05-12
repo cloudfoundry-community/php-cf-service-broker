@@ -43,7 +43,7 @@ class ServiceDescribe
     protected $name;
     /**
      * @var string
-     * @Column(type="string", length=100)
+     * @Column(type="string", length=100, nullable=true)
      */
     protected $description;
     /**
@@ -51,13 +51,35 @@ class ServiceDescribe
      * @Column(type="boolean")
      */
     protected $bindable = true;
+    /**
+     * @var bool
+     * @Column(type="boolean")
+     */
+    protected $planUpdateable = true;
+
+    /**
+     * @var String
+     * @Column(type="string")
+     */
+    protected $requires = '{}';
+
+    /**
+     * @var String
+     * @Column(type="string")
+     */
+    protected $tags = '{}';
 
     /**
      * @var Plan[]
      * @OneToMany(targetEntity="Plan", mappedBy="serviceDescribe")
      */
     protected $plans;
-
+    /**
+     * @var Metadata
+     * @ManyToOne(targetEntity="Metadata")
+     * @JoinColumn(name="metadata_id", referencedColumnName="name")
+     */
+    protected $metadata;
     /**
      * @var Dashboard
      * @ManyToOne(targetEntity="Dashboard", inversedBy="dashboard")
@@ -195,6 +217,70 @@ class ServiceDescribe
         foreach ($plans as $plan) {
             $this->addPlan($plan);
         }
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPlanUpdateable()
+    {
+        return $this->planUpdateable;
+    }
+
+    /**
+     * @param boolean $planUpdateable
+     */
+    public function setPlanUpdateable($planUpdateable)
+    {
+        $this->planUpdateable = $planUpdateable;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRequires()
+    {
+        return json_decode($this->requires, true);
+    }
+
+    /**
+     * @param array $requires
+     */
+    public function setRequires(array $requires)
+    {
+        $this->requires = json_encode($requires);
+    }
+
+    /**
+     * @return array
+     */
+    public function getTags()
+    {
+        return json_decode($this->tags, true);
+    }
+
+    /**
+     * @param array $tags
+     */
+    public function setTags(array $tags)
+    {
+        $this->tags = json_encode($tags);
+    }
+
+    /**
+     * @return Metadata
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
+
+    /**
+     * @param Metadata $metadata
+     */
+    public function setMetadata($metadata)
+    {
+        $this->metadata = $metadata;
     }
 
 }

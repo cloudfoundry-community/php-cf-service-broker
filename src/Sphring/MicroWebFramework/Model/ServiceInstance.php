@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping\Table;
 /**
  * Class ServiceInstance
  * @package Sphring\MicroWebFramework\Model
- * @Entity(repositoryClass="ServiceInstanceRepository", )
+ * @Entity()
  * @Table(name="service_instance")
  */
 class ServiceInstance

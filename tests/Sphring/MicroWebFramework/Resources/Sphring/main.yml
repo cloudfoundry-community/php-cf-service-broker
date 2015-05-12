@@ -3,9 +3,9 @@ sph-properties-file:
 cache:
   type: cache
   class:  ArthurH\SphringCache\CacheManager\NullCacheManager
-  cacheSphring: false
-  cacheSphringProxies: false
-  cacheSphringContext: false
+  cacheSphring: true
+  cacheSphringProxies: true
+  cacheSphringContext: true
 microwebframe.main:
   class: Sphring\MicroWebFramework\MicroWebFramework
   properties:

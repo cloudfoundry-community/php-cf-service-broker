@@ -14,6 +14,7 @@
 namespace Sphring\MicroWebFramework;
 
 
+use Arthurh\Sphring\Logger\LoggerSphring;
 use Arthurh\Sphring\Sphring;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -54,8 +55,10 @@ class ServiceBrokerTest extends \PHPUnit_Framework_TestCase
     public function testListCatalog()
     {
         $response = $this->dispatcher->dispatch(Request::METHOD_GET, ServiceBrokerTest::CATALOG_URL);
+
         $this->assertEquals(json_decode(file_get_contents(__DIR__ . ServiceBrokerTest::CATALOG_TO_CHECK)),
             json_decode($response->getContent()));
+
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 

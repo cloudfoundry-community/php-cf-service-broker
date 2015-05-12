@@ -6,3 +6,5 @@ util.serviceDescribeCreator:
       ref: microwebframe.doctrine
     services:
       json: %CONTEXTROOT%/services.json
+util.cloudFoundryBoot:
+  class: Sphring\MicroWebFramework\CloudFoundry\CloudFoundry

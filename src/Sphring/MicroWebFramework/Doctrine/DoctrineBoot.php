@@ -24,6 +24,7 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
+use Sphring\MicroWebFramework\CloudFoundry\CloudFoundry;
 
 class DoctrineBoot
 {
@@ -56,6 +57,10 @@ class DoctrineBoot
      * @var File
      */
     private $fileCreation;
+    /**
+     * @var CloudFoundry
+     */
+    private $cloudFoundryBoot;
 
     /**
      * @throws \Doctrine\ORM\ORMException
@@ -69,22 +74,34 @@ class DoctrineBoot
         AnnotationRegistry::registerAutoloadNamespace(
             'JMS\Serializer\Annotation', __DIR__ . '/../../../../vendor/jms/serializer/src'
         );
-        $config = Setup::createAnnotationMetadataConfiguration([$this->entityFolder->absolute()], $this->isDevMode());
+        $proxyDoctrineFolder = new Folder(sys_get_temp_dir() . '/doctrine');
+        $config = Setup::createAnnotationMetadataConfiguration([$this->entityFolder->absolute()],
+            $this->isDevMode(), $proxyDoctrineFolder->absolute());
         if ($this->cache !== null) {
-            $config->setQueryCacheImpl($this->cache);
-            $config->setResultCacheImpl($this->cache);
+            $config->setQueryCacheImpl($this->getCache());
+            $config->setResultCacheImpl($this->getCache());
         }
-        $this->entityManager = EntityManager::create($this->connection, $config);
+        $this->entityManager = $this->createEntityManager($config);
         $debugStack = new DebugStack();
         $this->entityManager->getConnection()->getConfiguration()->setSQLLogger($debugStack);
 
-        if ($this->fileCreation->getContent() == 1) {
+        if ($this->getFileCreation()->getContent() == 1) {
             return;
+        }
+
+        if ($proxyDoctrineFolder->isFolder()) {
+            $proxyDoctrineFolder->removeFiles();
         }
         $tool = new SchemaTool($this->entityManager);
         $metadatas = $this->entityManager->getMetadataFactory()->getAllMetadata();
-        $tool->createSchema($metadatas);
-        $this->fileCreation->setContent(1);
+        $proxyDoctrineFolder->create();
+        $this->entityManager->getProxyFactory()->generateProxyClasses($metadatas, $proxyDoctrineFolder->absolute());
+        if ($this->cloudFoundryBoot->isInCloudFoundry()) {
+            $tool->updateSchema($metadatas);
+        } else {
+            $tool->createSchema($metadatas);
+        }
+        $this->getFileCreation()->setContent(1);
     }
 
     /**
@@ -102,6 +119,52 @@ class DoctrineBoot
     public function setDevMode($devMode)
     {
         $this->devMode = (boolean)$devMode;
+    }
+
+    /**
+     * @return Cache
+     */
+    public function getCache()
+    {
+        if ($this->cloudFoundryBoot !== null && $this->cloudFoundryBoot->isInCloudFoundry()) {
+            return $this->cloudFoundryBoot->getDoctrineCache();
+        }
+        return $this->cache;
+    }
+
+    /**
+     * @param Cache $cache
+     */
+    public function setCache(Cache $cache)
+    {
+        $this->cache = $cache;
+    }
+
+    private function createEntityManager($config)
+    {
+        if ($this->cloudFoundryBoot->isInCloudFoundry()) {
+            return EntityManager::create(["url" => $this->cloudFoundryBoot->getDatabaseUrl()], $config);
+        }
+        return EntityManager::create($this->connection, $config);
+    }
+
+    /**
+     * @return File
+     */
+    public function getFileCreation()
+    {
+        if ($this->cloudFoundryBoot !== null && $this->cloudFoundryBoot->isInCloudFoundry()) {
+            $this->fileCreation = $this->cloudFoundryBoot->getFileCreation();
+        }
+        return $this->fileCreation;
+    }
+
+    /**
+     * @param File $fileCreation
+     */
+    public function setFileCreation(File $fileCreation)
+    {
+        $this->fileCreation = $fileCreation;
     }
 
     /**
@@ -171,35 +234,20 @@ class DoctrineBoot
     }
 
     /**
-     * @return Cache
+     * @return CloudFoundry
      */
-    public function getCache()
+    public function getCloudFoundryBoot()
     {
-        return $this->cache;
+        return $this->cloudFoundryBoot;
     }
 
     /**
-     * @param Cache $cache
+     * @Required()
+     * @param CloudFoundry $cloudFoundryBoot
      */
-    public function setCache(Cache $cache)
+    public function setCloudFoundryBoot(CloudFoundry $cloudFoundryBoot)
     {
-        $this->cache = $cache;
-    }
-
-    /**
-     * @return File
-     */
-    public function getFileCreation()
-    {
-        return $this->fileCreation;
-    }
-
-    /**
-     * @param File $fileCreation
-     */
-    public function setFileCreation(File $fileCreation)
-    {
-        $this->fileCreation = $fileCreation;
+        $this->cloudFoundryBoot = $cloudFoundryBoot;
     }
 
 

@@ -40,7 +40,7 @@ class Plan
     protected $name;
     /**
      * @var string
-     * @Column(type="string", length=100)
+     * @Column(type="string", length=100, nullable=true)
      */
     protected $description;
     /**
@@ -48,7 +48,12 @@ class Plan
      * @Column(type="boolean")
      */
     protected $free = true;
-
+    /**
+     * @var Metadata
+     * @ManyToOne(targetEntity="Metadata")
+     * @JoinColumn(name="metadata_id", referencedColumnName="name")
+     */
+    protected $metadata;
     /**
      * @var ServiceDescribe
      * @ManyToOne(targetEntity="ServiceDescribe", inversedBy="plans")
@@ -142,6 +147,22 @@ class Plan
     public function setFree($free)
     {
         $this->free = $free;
+    }
+
+    /**
+     * @return Metadata
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
+
+    /**
+     * @param Metadata $metadata
+     */
+    public function setMetadata($metadata)
+    {
+        $this->metadata = $metadata;
     }
 
 

@@ -17,6 +17,7 @@ use Arthurh\Sphring\Annotations\AnnotationsSphring\Required;
 use Rhumsaa\Uuid\Uuid;
 use Sphring\MicroWebFramework\Doctrine\DoctrineBoot;
 use Sphring\MicroWebFramework\Model\Dashboard;
+use Sphring\MicroWebFramework\Model\Metadata;
 use Sphring\MicroWebFramework\Model\Plan;
 use Sphring\MicroWebFramework\Model\ServiceDescribe;
 
@@ -45,6 +46,9 @@ class ServiceDescribeCreator
             $plans[] = $this->createPlan($plan);
         }
         $bindable = (!isset($service['bindable']) || $service['bindable']) ? true : false;
+        $planUpdateable = (!isset($service['plan_updateable']) || $service['plan_updateable']) ? true : false;
+        $requires = (!isset($service['requires'])) ? [] : $service['requires'];
+        $tags = (!isset($service['tags'])) ? [] : $service['tags'];
         $serviceDescribe = $repo->find($id);
         if ($serviceDescribe !== null) {
             $serviceDescribe->setPlans($plans);
@@ -55,6 +59,12 @@ class ServiceDescribeCreator
         if (isset($service['dashboard_client'])) {
             $serviceDescribe->setDashboard($this->createDashboard($service['dashboard_client']));
         }
+        if (isset($service['metadata'])) {
+            $serviceDescribe->setMetadata($this->createMetadata($service['metadata']));
+        }
+        $serviceDescribe->setPlanUpdateable($planUpdateable);
+        $serviceDescribe->setRequires($requires);
+        $serviceDescribe->setTags($tags);
         $em->persist($serviceDescribe);
         $em->flush();
     }
@@ -66,14 +76,45 @@ class ServiceDescribeCreator
         $repo = $em->getRepository(Plan::class);
         $planObject = $repo->find($id);
         $free = (!isset($service['free']) || $service['free']) ? true : false;
-        if ($planObject !== null) {
-            $planObject->setFree($free);
-            return $planObject;
+
+        if ($planObject === null) {
+            $planObject = new Plan($id, $plan['name'], $plan['description']);
         }
-        $planObject = new Plan($id, $plan['name'], $plan['description']);
+        if (isset($plan['metadata'])) {
+            $planObject->setMetadata($this->createMetadata($plan['metadata']));
+        }
         $planObject->setFree($free);
         $em->persist($planObject);
         return $planObject;
+    }
+
+    public function createMetadata(array $metadata)
+    {
+        $em = $this->doctrineBoot->getEntityManager();
+        $repo = $em->getRepository(Metadata::class);
+        $metadataObject = null;
+        if (!isset($metadata['name'])) {
+            $metadata['name'] = $metadata['displayName'];
+        }
+        if ($metadata['name'] !== null) {
+            $metadataObject = $repo->find($metadata['name']);
+        }
+
+        if ($metadataObject === null) {
+            $metadataObject = new Metadata($metadata['name'], $metadata['displayName']);
+        }
+        $bullets = (!isset($metadata['bullets'])) ? [] : $metadata['bullets'];
+        $costs = (!isset($metadata['costs'])) ? [] : $metadata['costs'];
+        $metadataObject->setBullets($bullets);
+        $metadataObject->setCosts($costs);
+        $metadataObject->setDescription($metadata['description']);
+        $metadataObject->setDocumentationUrl($metadata['documentationUrl']);
+        $metadataObject->setImageUrl($metadata['imageUrl']);
+        $metadataObject->setLongDescription($metadata['longDescription']);
+        $metadataObject->setProviderDisplayName($metadata['providerDisplayName']);
+        $metadataObject->setSupportUrl($metadata['supportUrl']);
+        $em->persist($metadataObject);
+        return $metadataObject;
     }
 
     public function createDashboard(array $dashboard)

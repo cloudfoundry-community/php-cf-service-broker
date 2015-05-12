@@ -1,6 +1,6 @@
 # php-cf-service-broker
 
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE) [![Build Status](https://travis-ci.org/cloudfoundry-community/php-cf-service-broker.svg?branch=master)](https://travis-ci.org/cloudfoundry-community/php-cf-service-broker) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cloudfoundry-community/php-cf-service-broker/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cloudfoundry-community/php-cf-service-broker/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/cloudfoundry-community/php-cf-service-broker/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/cloudfoundry-community/php-cf-service-broker/?branch=master)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE) [![Stories in Ready](https://badge.waffle.io/cloudfoundry-community/php-cf-service-broker.png?label=ready&title=Ready)](https://waffle.io/cloudfoundry-community/php-cf-service-broker) [![Build Status](https://travis-ci.org/cloudfoundry-community/php-cf-service-broker.svg?branch=master)](https://travis-ci.org/cloudfoundry-community/php-cf-service-broker) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cloudfoundry-community/php-cf-service-broker/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cloudfoundry-community/php-cf-service-broker/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/cloudfoundry-community/php-cf-service-broker/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/cloudfoundry-community/php-cf-service-broker/?branch=master)
 
 Php project for creating Cloud Foundry service brokers.
 
@@ -54,6 +54,14 @@ service.broker.list:
  - Unvalidate cache by doing in command line `touch sphring/main.yml` or set cache to `false` inside [/config/config.yml](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/config/config.yml)
  - Your new service broker is available
 
+## Run as a Cloud Foundry app
+
+ 1. Create a database service which his name follow this regex: `/.*(postgres|pgsql|db|database|my|maria|oracle|oci).*/i` (**note**: add in `composer.json` other pdo driver than pdo_mysql)
+ 2. Push the app (run `cf push`)
+ 3. Bind your database service on your app
+ 4. Restage your app
+ 5. Service broker app is ready try go to `http://your_url/v2/catalog` you should see your catalog
+
 ## Run the tests
 
 Tests use [PHPUnit](https://phpunit.de/).
@@ -65,9 +73,3 @@ Run with your command line:
  1. Update [services.json](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/tests/Sphring/MicroWebFramework/Resources/Sphring/services.json) inside tests configuration directory.
  2. Update [service-broker.yml](https://github.com/cloudfoundry-community/php-cf-service-broker/blob/master/tests/Sphring/MicroWebFramework/Resources/Sphring/service-broker.yml) inside tests configuration directory.
  3. Run `vendor/bin/phpunit --bootstrap tests\bootstrap.php --no-configuration tests`
-
-## Todo
-
- - ~~Add tests~~
- - Follow [new spec](https://docs.google.com/document/d/12ghe1B3YPhHLGcAOgJe_1PcpDUbhaaz1RentoWepwsA/edit?usp=sharing) to hand asynchronous service broker
- - Make it Cloud Foundry ready to run as an app inside Cloud Foundry by using [cf-helper-php](https://github.com/cloudfoundry-community/cf-helper-php)

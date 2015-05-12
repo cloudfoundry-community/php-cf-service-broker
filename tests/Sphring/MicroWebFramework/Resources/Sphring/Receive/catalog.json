@@ -4,6 +4,9 @@
       "id": "c76ed0a4-9a04-5710-90c2-75e955697b08",
       "name": "mysql",
       "description": "A MySQL-compatible relational database",
+      "plan_updateable": true,
+      "requires": [],
+      "tags": [],
       "plans": [
         {
           "id": "97f78da1-48ce-51dc-b550-6de43ee3cc77",
@@ -22,6 +25,66 @@
         "id": "client-id-1",
         "secret": "secret-1",
         "redirect_uri": "https:\/\/dashboard.service.com"
+      }
+    },
+    {
+      "id": "e6e303f8-1576-56e8-9dea-bcffe5108f40",
+      "name": "cloudamqp",
+      "description": "Managed HA RabbitMQ servers in the cloud",
+      "plan_updateable": true,
+      "requires": [],
+      "tags": [
+        "amqp",
+        "rabbitmq",
+        "messaging"
+      ],
+      "plans": [
+        {
+          "id": "8cfb13f3-9619-5c45-ad9f-a6c4b3d29afe",
+          "name": "bunny",
+          "description": "A mid-sided plan",
+          "free": true,
+          "metadata": {
+            "name": "Big Bunny",
+            "description": null,
+            "bullets": [
+              "20 GB of messages",
+              "20 connections"
+            ],
+            "costs": [
+              {
+                "amount": {
+                  "usd": 99,
+                  "eur": 49
+                },
+                "unit": "MONTHLY"
+              },
+              {
+                "amount": {
+                  "usd": 0.99,
+                  "eur": 0.49
+                },
+                "unit": "1GB of messages over 20GB"
+              }
+            ],
+            "displayName": "Big Bunny"
+          }
+        }
+      ],
+      "metadata": {
+        "name": "CloudAMQP",
+        "description": null,
+        "displayName": "CloudAMQP",
+        "imageUrl": "https:\/\/d33na3ni6eqf5j.cloudfront.net\/app_resources\/18492\/thumbs_112\/img9069612145282015279.png",
+        "longDescription": "Managed, highly available, RabbitMQ clusters in the cloud",
+        "providerDisplayName": "84codes AB",
+        "documentationUrl": "http:\/\/docs.cloudfoundry.com\/docs\/dotcom\/marketplace\/services\/cloudamqp.html",
+        "supportUrl": "http:\/\/www.cloudamqp.com\/support.html"
+      },
+      "dashboard_client": {
+        "id": "p-mysql-client",
+        "secret": "p-mysql-secret",
+        "redirect_uri": "http:\/\/p-mysql.example.com\/auth\/create"
       }
     }
   ]

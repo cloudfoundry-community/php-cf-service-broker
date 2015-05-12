@@ -14,6 +14,8 @@ microwebframe.doctrine:
         memory: true
     cache:
       ref: microwebframe.doctrine.cache
+    cloudFoundryBoot:
+      ref: util.cloudFoundryBoot
     fileCreation:
       file: %CONTEXTROOT%/db.ct
 microwebframe.doctrine.cache:

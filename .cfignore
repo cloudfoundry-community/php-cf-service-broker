@@ -1,0 +1,10 @@
+*.phar
+/.idea
+logs
+/cache
+/tests
+/.scrutinizer.yml
+/.gitattributes
+/.travis.yml
+/phpunit.xml.dist
+/README.md

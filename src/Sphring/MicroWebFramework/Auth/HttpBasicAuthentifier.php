@@ -15,6 +15,7 @@ namespace Sphring\MicroWebFramework\Auth;
 
 use Arthurh\Sphring\Annotations\AnnotationsSphring\Required;
 use Sphring\MicroWebFramework\Security\Encoder;
+use Symfony\Component\HttpFoundation\Request;
 
 class HttpBasicAuthentifier
 {
@@ -28,6 +29,11 @@ class HttpBasicAuthentifier
      */
     private $validUsers;
 
+    /**
+     * @var Request
+     */
+    private $request;
+
     function __construct()
     {
 
@@ -35,25 +41,20 @@ class HttpBasicAuthentifier
 
     function auth()
     {
-        if (empty($this->validUsers[$_SERVER['PHP_AUTH_USER']])) {
+        if ($this->request === null) {
             return false;
         }
-        $cryptPass = $this->encoder->crypt($_SERVER['PHP_AUTH_PW']);
-        if ($cryptPass !== $this->validUsers[$_SERVER['PHP_AUTH_USER']]) {
+        $user = $this->request->server->get('PHP_AUTH_USER');
+        $password = $this->request->server->get('PHP_AUTH_PW');
+        if (empty($this->validUsers[$user])) {
+            return false;
+        }
+        $cryptPass = $this->encoder->crypt($password);
+        if ($cryptPass !== $this->validUsers[$user]) {
             return false;
         }
         return true;
     }
-
-    /**
-     * @Required
-     * @param Encoder $encoder
-     */
-    public function setEncoder(Encoder $encoder)
-    {
-        $this->encoder = $encoder;
-    }
-
 
     /**
      *
@@ -81,5 +82,29 @@ class HttpBasicAuthentifier
         return $this->encoder;
     }
 
+    /**
+     * @Required
+     * @param Encoder $encoder
+     */
+    public function setEncoder(Encoder $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest($request)
+    {
+        $this->request = $request;
+    }
 
 }
