@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/cloudfoundry-community/php-cf-service-broker.png?label=ready&title=Ready)](https://waffle.io/cloudfoundry-community/php-cf-service-broker)
 # php-cf-service-broker
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE) [![Build Status](https://travis-ci.org/cloudfoundry-community/php-cf-service-broker.svg?branch=master)](https://travis-ci.org/cloudfoundry-community/php-cf-service-broker) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cloudfoundry-community/php-cf-service-broker/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cloudfoundry-community/php-cf-service-broker/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/cloudfoundry-community/php-cf-service-broker/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/cloudfoundry-community/php-cf-service-broker/?branch=master)
