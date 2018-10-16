@@ -29,21 +29,22 @@ class IndexController extends AbstractController
         $this->response->headers->add(['Content-Type' => 'application/json']);
 
         $version = $this->getRequest()->headers->get('X-Broker-API-Version') . '.0';
+        $brokerVersionExpression = $this->getBrokerVersionExpression();
         try {
-            $satisfy = $this->getBrokerVersionExpression()->satisfiedBy(new version($version));
+            $satisfy = $brokerVersionExpression->satisfiedBy(new version($version));
         } catch (SemVerException $e) {
             $this->response->setStatusCode(Response::HTTP_PRECONDITION_FAILED);
             return $this->getErrorJson(
-                'PreconditionFailed',
-                Response::$statusTexts[Response::HTTP_PRECONDITION_FAILED]
+                'UnsupportedProtocolVersion',
+                "Protocol version $version is unsupported. Supported protocol versions are: " . $brokerVersionExpression->getString()
             );
         }
 
         if (empty($version) || !$satisfy) {
             $this->response->setStatusCode(Response::HTTP_PRECONDITION_FAILED);
             return $this->getErrorJson(
-                'PreconditionFailed',
-                Response::$statusTexts[Response::HTTP_PRECONDITION_FAILED]
+                'UnsupportedProtocolVersion',
+                "Protocol version $version is unsupported. Supported protocol versions are: " . $brokerVersionExpression->getString()
             );
         }
         $basicAuth = $this->getBasicAuth();
