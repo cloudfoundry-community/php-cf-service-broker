@@ -14,4 +14,4 @@ expression.broker.version:
   class: vierbergenlars\SemVer\expression
   constructor:
     1:
-      value: %config.brokerVersion%
+      value: <=%config.brokerVersion%
