@@ -44,6 +44,7 @@ class Catalog extends IndexController
         $service['id'] = $serviceDescribe->getId();
         $service['name'] = $serviceDescribe->getName();
         $service['description'] = $serviceDescribe->getDescription();
+        $service['bindable'] = $serviceDescribe->isBindable();
         $service['plan_updateable'] = $serviceDescribe->isPlanUpdateable();
         $service['requires'] = $serviceDescribe->getRequires();
         $service['tags'] = $serviceDescribe->getTags();
