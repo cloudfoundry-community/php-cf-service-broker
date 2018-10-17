@@ -158,6 +158,30 @@ class ServiceDescribe
     }
 
     /**
+     * Specifies whether the "Fetching a Service Instance" endpoint is supported for all plans
+     *
+     * @return boolean
+     *
+     * @see https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md#fetching-a-service-instance
+     */
+    public function isInstancesRetrievable()
+    {
+        return false;
+    }
+
+    /**
+     * Specifies whether the "Fetching a Service Binding" endpoint is supported for all plans.
+     *
+     * @return boolean
+     *
+     * @see https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md#fetching-a-service-binding
+     */
+    public function isBindingsRetrievable()
+    {
+        return false;
+    }
+
+    /**
      * @param boolean $bindable
      */
     public function setBindable($bindable)
