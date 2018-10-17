@@ -75,7 +75,6 @@ class ServiceDescribeCreator
         $id = Uuid::uuid5(Uuid::NAMESPACE_OID, $plan['name'])->toString();
         $repo = $em->getRepository(Plan::class);
         $planObject = $repo->find($id);
-        $free = (!isset($service['free']) || $service['free']) ? true : false;
 
         if ($planObject === null) {
             $planObject = new Plan($id, $plan['name'], $plan['description']);
@@ -83,7 +82,10 @@ class ServiceDescribeCreator
         if (isset($plan['metadata'])) {
             $planObject->setMetadata($this->createMetadata($plan['metadata']));
         }
+
+        $free = (!isset($plan['free']) || $plan['free']) ? true : false;
         $planObject->setFree($free);
+
         $em->persist($planObject);
         return $planObject;
     }
