@@ -20,6 +20,7 @@ use Sphring\MicroWebFramework\Model\Plan;
 use Sphring\MicroWebFramework\Model\ServiceDescribe;
 use Sphring\MicroWebFramework\Model\ServiceInstance;
 use Symfony\Component\HttpFoundation\Response;
+use League\Route\Http\Exception\UnprocessableEntityException;
 
 abstract class AbstractServiceBroker
 {
@@ -123,16 +124,23 @@ abstract class AbstractServiceBroker
 
     public function beforeBinding($data, $instanceId, $bindingId)
     {
+        if (empty($data['bind_resource']) ||
+            empty($data['bind_resource']['app_guid'])
+        ) {
+            throw new UnprocessableEntityException('bind_resource.app_guid is required');
+        }
+
         $em = $this->doctrineBoot->getEntityManager();
         $repoServiceInstance = $em->getRepository(ServiceInstance::class);
         $serviceInstance = $repoServiceInstance->find($instanceId);
 
+        $appGuid = $data['bind_resource']['app_guid'];
         $repoApp = $em->getRepository(Binding::class);
         $app = $repoApp->find($bindingId);
         if ($app === null) {
-            $app = new Binding($bindingId, $data['app_guid']);
+            $app = new Binding($bindingId, $appGuid);
         }
-        if ($app->getServiceInstances()->contains($serviceInstance) && $app->getAppGuid() === $data['app_guid']) {
+        if ($app->getServiceInstances()->contains($serviceInstance) && $app->getAppGuid() === $appGuid) {
             $this->responseConflict();
         }
         if ($app->getServiceInstances()->contains($serviceInstance)) {
