@@ -26,7 +26,7 @@ class IndexController extends AbstractController
 
     public function action()
     {
-        $this->response->headers->add(['Content-Type' => 'application/json']);
+        parent::action();
 
         $version = $this->getRequest()->headers->get('X-Broker-API-Version') . '.0';
         $brokerVersionExpression = $this->getBrokerVersionExpression();

@@ -43,7 +43,10 @@ abstract class AbstractController
      */
     protected $response;
 
-    abstract public function action();
+    public function action()
+    {
+        $this->response->headers->add(['Content-Type' => 'application/json']);
+    }
 
     /**
      * @return \ArrayObject
