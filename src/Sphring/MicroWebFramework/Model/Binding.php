@@ -124,4 +124,15 @@ class Binding
         $this->appGuid = $appGuid;
     }
 
+
+    public function __toString()
+    {
+        return json_encode(
+            [
+                'id' => $this->id,
+                'appGuid' => $this->appGuid,
+            ],
+            JSON_FORCE_OBJECT
+        );
+    }
 }

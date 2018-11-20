@@ -221,4 +221,18 @@ class ServiceInstance
         $this->credentials = json_encode($credentials);
     }
 
+    public function __toString()
+    {
+        return json_encode(
+            [
+                'id' => $this->id,
+                'serviceDescribe' => $this->serviceDescribe,
+                'plan' => $this->plan,
+                'organization' => $this->organization,
+                'space' => $this->space,
+                'credentials' => $this->credentials,
+            ],
+            JSON_FORCE_OBJECT
+        );
+    }
 }

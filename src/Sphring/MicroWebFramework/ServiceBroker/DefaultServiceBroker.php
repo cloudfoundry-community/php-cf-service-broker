@@ -13,6 +13,7 @@
 namespace Sphring\MicroWebFramework\ServiceBroker;
 
 
+use Arthurh\Sphring\Logger\LoggerSphring;
 use Sphring\MicroWebFramework\Model\Binding;
 use Sphring\MicroWebFramework\Model\ServiceInstance;
 
@@ -37,7 +38,11 @@ class DefaultServiceBroker extends AbstractServiceBroker
      */
     public function provisioning(ServiceInstance $serviceInstance)
     {
+        LoggerSphring::getInstance()->info(__METHOD__ . ': serviceInstance: ' . $serviceInstance);
+
         // TODO: Implement provisioning() method.
+
+        LoggerSphring::getInstance()->info(__METHOD__ . ': end');
     }
 
     /**
@@ -51,7 +56,11 @@ class DefaultServiceBroker extends AbstractServiceBroker
      */
     public function update(ServiceInstance $serviceInstance)
     {
+        LoggerSphring::getInstance()->info(__METHOD__ . ': ' . $serviceInstance);
+
         // TODO: Implement update() method.
+
+        LoggerSphring::getInstance()->info(__METHOD__ . ': end');
     }
 
     /**
@@ -66,7 +75,15 @@ class DefaultServiceBroker extends AbstractServiceBroker
      */
     public function binding(ServiceInstance $serviceInstance, Binding $binding)
     {
+        LoggerSphring::getInstance()->info(
+            __METHOD__ . ':' .
+                ' serviceInstance: ' . $serviceInstance .
+                ' binding: ' . $binding
+        );
+
         // TODO: Implement binding() method.
+
+        LoggerSphring::getInstance()->info(__METHOD__ . ': end');
     }
 
     /**
@@ -81,7 +98,15 @@ class DefaultServiceBroker extends AbstractServiceBroker
      */
     public function unbinding(ServiceInstance $serviceInstance, Binding $binding)
     {
+        LoggerSphring::getInstance()->info(
+            __METHOD__ . ':' .
+                ' serviceInstance: ' . $serviceInstance .
+                ' binding: ' . $binding
+        );
+
         // TODO: Implement unbinding() method.
+
+        LoggerSphring::getInstance()->info(__METHOD__ . ': end');
     }
 
     /**
@@ -91,6 +116,10 @@ class DefaultServiceBroker extends AbstractServiceBroker
      */
     public function deprovisioning(ServiceInstance $serviceInstance)
     {
+        LoggerSphring::getInstance()->info(__METHOD__ . ': ' . $serviceInstance);
+
         // TODO: Implement deprovisioning() method.
+
+        LoggerSphring::getInstance()->info(__METHOD__ . ': end');
     }
 }
