@@ -4,7 +4,7 @@ config:
   debug: false # set to true to show error in browser or stdout
   cache: true # Set to false to remove caching
   cacheDir: '/cache'
-  brokerVersion: '2.x' # Semantical version for broker
+  brokerVersion: '2.14' # Supported semantic Open Service Broker API version
 security:
   salt: 'sjflmdsd4ds54%dfjsdfl$' # Salt for user creation, change it with random values
   algo: 'md5|sha256' # use pipe to add a new algo to create password
