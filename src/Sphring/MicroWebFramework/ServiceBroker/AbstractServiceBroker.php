@@ -9,6 +9,13 @@
  * Author: Arthur Halet
  * Date: 10/05/2015
  */
+/**
+ * Copyright 2018. Plesk International GmbH.
+ *
+ * This software is distributed under the terms and conditions of the 'MIT'
+ * license which can be found in the file 'LICENSE' in this package distribution
+ * or at 'http://opensource.org/licenses/MIT'.
+ */
 
 namespace Sphring\MicroWebFramework\ServiceBroker;
 
@@ -20,6 +27,7 @@ use Sphring\MicroWebFramework\Model\Plan;
 use Sphring\MicroWebFramework\Model\ServiceDescribe;
 use Sphring\MicroWebFramework\Model\ServiceInstance;
 use Symfony\Component\HttpFoundation\Response;
+use League\Route\Http\Exception\UnprocessableEntityException;
 
 abstract class AbstractServiceBroker
 {
@@ -123,16 +131,23 @@ abstract class AbstractServiceBroker
 
     public function beforeBinding($data, $instanceId, $bindingId)
     {
+        if (empty($data['bind_resource']) ||
+            empty($data['bind_resource']['app_guid'])
+        ) {
+            throw new UnprocessableEntityException('bind_resource.app_guid is required');
+        }
+
         $em = $this->doctrineBoot->getEntityManager();
         $repoServiceInstance = $em->getRepository(ServiceInstance::class);
         $serviceInstance = $repoServiceInstance->find($instanceId);
 
+        $appGuid = $data['bind_resource']['app_guid'];
         $repoApp = $em->getRepository(Binding::class);
         $app = $repoApp->find($bindingId);
         if ($app === null) {
-            $app = new Binding($bindingId, $data['app_guid']);
+            $app = new Binding($bindingId, $appGuid);
         }
-        if ($app->getServiceInstances()->contains($serviceInstance) && $app->getAppGuid() === $data['app_guid']) {
+        if ($app->getServiceInstances()->contains($serviceInstance) && $app->getAppGuid() === $appGuid) {
             $this->responseConflict();
         }
         if ($app->getServiceInstances()->contains($serviceInstance)) {

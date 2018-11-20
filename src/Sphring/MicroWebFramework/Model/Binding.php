@@ -9,6 +9,13 @@
  * Author: Arthur Halet
  * Date: 10/05/2015
  */
+/**
+ * Copyright 2018. Plesk International GmbH.
+ *
+ * This software is distributed under the terms and conditions of the 'MIT'
+ * license which can be found in the file 'LICENSE' in this package distribution
+ * or at 'http://opensource.org/licenses/MIT'.
+ */
 
 namespace Sphring\MicroWebFramework\Model;
 
@@ -124,4 +131,15 @@ class Binding
         $this->appGuid = $appGuid;
     }
 
+
+    public function __toString()
+    {
+        return json_encode(
+            [
+                'id' => $this->id,
+                'appGuid' => $this->appGuid,
+            ],
+            JSON_FORCE_OBJECT
+        );
+    }
 }

@@ -9,6 +9,13 @@
  * Author: Arthur Halet
  * Date: 10/05/2015
  */
+/**
+ * Copyright 2018. Plesk International GmbH.
+ *
+ * This software is distributed under the terms and conditions of the 'MIT'
+ * license which can be found in the file 'LICENSE' in this package distribution
+ * or at 'http://opensource.org/licenses/MIT'.
+ */
 
 namespace Sphring\MicroWebFramework\Model;
 
@@ -221,4 +228,18 @@ class ServiceInstance
         $this->credentials = json_encode($credentials);
     }
 
+    public function __toString()
+    {
+        return json_encode(
+            [
+                'id' => $this->id,
+                'serviceDescribe' => $this->serviceDescribe,
+                'plan' => $this->plan,
+                'organization' => $this->organization,
+                'space' => $this->space,
+                'credentials' => $this->credentials,
+            ],
+            JSON_FORCE_OBJECT
+        );
+    }
 }

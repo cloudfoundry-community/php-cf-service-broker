@@ -9,6 +9,13 @@
  * Author: Arthur Halet
  * Date: 10/05/2015
  */
+/**
+ * Copyright 2018. Plesk International GmbH.
+ *
+ * This software is distributed under the terms and conditions of the 'MIT'
+ * license which can be found in the file 'LICENSE' in this package distribution
+ * or at 'http://opensource.org/licenses/MIT'.
+ */
 
 namespace Sphring\MicroWebFramework\Model;
 
@@ -155,6 +162,30 @@ class ServiceDescribe
     public function isBindable()
     {
         return $this->bindable;
+    }
+
+    /**
+     * Specifies whether the "Fetching a Service Instance" endpoint is supported for all plans
+     *
+     * @return boolean
+     *
+     * @see https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md#fetching-a-service-instance
+     */
+    public function isInstancesRetrievable()
+    {
+        return false;
+    }
+
+    /**
+     * Specifies whether the "Fetching a Service Binding" endpoint is supported for all plans.
+     *
+     * @return boolean
+     *
+     * @see https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md#fetching-a-service-binding
+     */
+    public function isBindingsRetrievable()
+    {
+        return false;
     }
 
     /**
