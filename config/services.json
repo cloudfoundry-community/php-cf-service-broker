@@ -3,7 +3,9 @@
     {
       "name": "mysql",
       "description": "A MySQL-compatible relational database",
+      "tags": ["sql", "relational", "databases", "mysql"],
       "bindable": true,
+      "plan_updateable": true,
       "plans": [
         {
           "name": "small",
