@@ -9,6 +9,13 @@
  * Author: Arthur Halet
  * Date: 19/03/2015
  */
+/**
+ * Copyright 2018. Plesk International GmbH.
+ *
+ * This software is distributed under the terms and conditions of the 'MIT'
+ * license which can be found in the file 'LICENSE' in this package distribution
+ * or at 'http://opensource.org/licenses/MIT'.
+ */
 
 
 namespace Sphring\MicroWebFramework\Controller;
